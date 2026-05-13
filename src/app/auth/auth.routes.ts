@@ -12,6 +12,9 @@ route.post('/login', authController.login);
 // change password
 route.patch('/change-password', authController.changePassword);
 
+// forgot password
+route.post('/forgot-password', authController.forgotPassword);
+
 
 
 // exporting

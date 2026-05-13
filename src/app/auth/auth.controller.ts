@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerSchema, loginSchema, changePasswordSchema } from "./auth.validation";
+import { registerSchema, loginSchema, changePasswordSchema, forgotPasswordSchema } from "./auth.validation";
 
 // registration
 const register = async (req: Request, res: Response) => {
@@ -101,7 +101,7 @@ const changePassword = async (req: Request, res: Response) => {
         newPassword,
         confirmPassword
     } = result.data;
-    
+
 
     /**
      * Here you will:
@@ -118,8 +118,49 @@ const changePassword = async (req: Request, res: Response) => {
     });
 };
 
+
+// forgot password
+const forgotPassword = async (req: Request, res: Response) => {
+
+    // Validate req.body
+    const result = forgotPasswordSchema.safeParse(req.body);
+
+    // Validation failed
+    if (!result.success) {
+        return res.status(400).json({
+            success: false,
+            errors: result.error.issues
+        });
+    }
+
+    // Validated data
+    const { email } = result.data;
+
+    /**
+     * Here you will:
+     *
+     * 1. Find user by email
+     * 2. Generate reset token
+     * 3. Save token to database
+     * 4. Send reset email
+     */
+
+    // Example reset token
+    const resetToken = "reset-token-example";
+
+    res.status(200).json({
+        success: true,
+        message: "Password reset link sent successfully",
+        data: {
+            email,
+            resetToken
+        }
+    });
+};
+
 export default {
     register,
     login,
     changePassword,
+    forgotPassword
 }
