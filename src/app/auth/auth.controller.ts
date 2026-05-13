@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerSchema, loginSchema } from "./auth.validation";
+import { registerSchema, loginSchema, changePasswordSchema } from "./auth.validation";
 
 // registration
 const register = async (req: Request, res: Response) => {
@@ -81,7 +81,45 @@ const login = async (req: Request, res: Response) => {
 };
 
 
+// change password
+const changePassword = async (req: Request, res: Response) => {
+
+    // Validate req.body
+    const result = changePasswordSchema.safeParse(req.body);
+
+    // Validation failed
+    if (!result.success) {
+        return res.status(400).json({
+            success: false,
+            errors: result.error.issues
+        });
+    }
+
+    // Validated data
+    const {
+        oldPassword,
+        newPassword,
+        confirmPassword
+    } = result.data;
+    
+
+    /**
+     * Here you will:
+     *
+     * 1. Get logged in user
+     * 2. Check old password using bcrypt.compare()
+     * 3. Hash new password
+     * 4. Update password in database
+     */
+
+    res.status(200).json({
+        success: true,
+        message: "Password changed successfully"
+    });
+};
+
 export default {
     register,
     login,
+    changePassword,
 }

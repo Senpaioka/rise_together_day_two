@@ -9,6 +9,9 @@ route.post('/register', authController.register);
 // User login route
 route.post('/login', authController.login);
 
+// change password
+route.patch('/change-password', authController.changePassword);
+
 
 
 // exporting
