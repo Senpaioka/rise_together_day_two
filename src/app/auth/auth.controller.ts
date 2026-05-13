@@ -1,18 +1,19 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { registerSchema, loginSchema, changePasswordSchema, forgotPasswordSchema } from "./auth.validation.js";
 
 // registration
-const register = async (req: Request, res: Response) => {
+const register = async (req: Request<Record<string, string>, unknown, Record<string, unknown>>, res: Response) => {
 
     // Validate req.body
     const result = registerSchema.safeParse(req.body);
 
     // Validation failed
     if (!result.success) {
-        return res.status(400).json({
+        res.status(400).json({
             success: false,
             errors: result.error.issues
         });
+        return;
     }
 
     // Validated data
@@ -43,17 +44,18 @@ const register = async (req: Request, res: Response) => {
 
 
 // login
-const login = async (req: Request, res: Response) => {
+const login = async (req: Request<Record<string, string>, unknown, Record<string, unknown>>, res: Response) => {
 
     // Validate req.body
     const result = loginSchema.safeParse(req.body);
 
      // Validation failed
     if (!result.success) {
-        return res.status(400).json({
+        res.status(400).json({
             success: false,
             errors: result.error.issues
         });
+        return;
     }
     
     // Validated data
@@ -82,17 +84,18 @@ const login = async (req: Request, res: Response) => {
 
 
 // change password
-const changePassword = async (req: Request, res: Response) => {
+const changePassword = async (req: Request<Record<string, string>, unknown, Record<string, unknown>>, res: Response) => {
 
     // Validate req.body
     const result = changePasswordSchema.safeParse(req.body);
 
     // Validation failed
     if (!result.success) {
-        return res.status(400).json({
+        res.status(400).json({
             success: false,
             errors: result.error.issues
         });
+        return;
     }
 
     // Validated data
@@ -120,17 +123,18 @@ const changePassword = async (req: Request, res: Response) => {
 
 
 // forgot password
-const forgotPassword = async (req: Request, res: Response) => {
+const forgotPassword = async (req: Request<Record<string, string>, unknown, Record<string, unknown>>, res: Response) => {
 
     // Validate req.body
     const result = forgotPasswordSchema.safeParse(req.body);
 
     // Validation failed
     if (!result.success) {
-        return res.status(400).json({
+        res.status(400).json({
             success: false,
             errors: result.error.issues
         });
+        return;
     }
 
     // Validated data
