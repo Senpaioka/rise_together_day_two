@@ -25,3 +25,8 @@ export const loginSchema = z.object({
         .string()
         .min(6, "Password must be at least 6 characters")
 });
+
+
+// Generate TypeScript type from schema
+export type RegisterUser = z.infer<typeof registerSchema>;
+export type LoginUser = z.infer<typeof loginSchema>;
