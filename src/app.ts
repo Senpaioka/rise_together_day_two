@@ -1,7 +1,7 @@
 import express, { type Application, type NextFunction, type Request, type Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import router from './routes/routers';
+import router from './app/routes/routers';
 
 const app: Application = express();
 
@@ -18,6 +18,9 @@ app.get("/", (req: Request, res: Response) => {
         message: "Server is running."
     });
 });
+
+// routes
+app.use('/api/v1', router);
 
 // Not found route
 app.use( (req: Request, res: Response) => {
@@ -37,7 +40,5 @@ app.use( (err: unknown, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-// routes
-app.use('/api/v1', router);
 
 export default app;
