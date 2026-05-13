@@ -6,6 +6,9 @@ const route: Router = express.Router();
 // User registration route
 route.post('/register', authController.register);
 
+// User login route
+route.post('/login', authController.login);
+
 
 
 // exporting
