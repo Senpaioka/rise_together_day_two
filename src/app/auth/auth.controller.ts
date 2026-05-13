@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerSchema, loginSchema, changePasswordSchema, forgotPasswordSchema } from "./auth.validation";
+import { registerSchema, loginSchema, changePasswordSchema, forgotPasswordSchema } from "./auth.validation.js";
 
 // registration
 const register = async (req: Request, res: Response) => {
