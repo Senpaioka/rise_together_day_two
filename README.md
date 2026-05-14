@@ -129,6 +129,12 @@ Used for:
 - Users A–M → Server 1
 - Users N–Z → Server 2
 
+
+# Database ERD
+
+![ERD](./image/erd.png)
+
+
 # Express TypeScript REST API
 
 A modular REST API boilerplate built with **Express.js** and **TypeScript**, featuring a clean folder structure, input validation, and cookie-based authentication scaffolding.
