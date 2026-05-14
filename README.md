@@ -1,9 +1,140 @@
+# Database Interview Questions & Answers
+
+---
+
+## 1. What is the difference between Primary Key and Foreign Key?
+
+### Primary Key
+- Uniquely identifies each row in a table
+- Cannot be NULL
+- One primary key per table
+
+### Foreign Key
+- Creates relationship between tables
+- References a primary key in another table
+- Can contain duplicate values
+
+### Example
+```sql
+Users(id PRIMARY KEY)
+
+Orders(user_id FOREIGN KEY REFERENCES Users(id))
+```
+
+## 2. Why is normalization important?
+
+Normalization reduces:
+
+- Data duplication
+- Inconsistent data
+- Update problems
+
+It organizes data into related tables for better integrity and maintenance.
+
+## 3. What is a JOIN?
+
+A JOIN combines data from multiple tables using related columns.
+
+**Example**
+```sql
+SELECT users.name, orders.total
+FROM users
+JOIN orders
+ON users.id = orders.user_id;
+```
+
+## 4. Difference between SQL and MongoDB?
+
+| SQL                 | MongoDB                  |
+| ------------------- | ------------------------ |
+| Relational database | NoSQL database           |
+| Uses tables         | Uses collections         |
+| Fixed schema        | Flexible schema          |
+| Uses SQL queries    | Uses JSON-like documents |
+
+
+## 5. What is a composite key?
+
+A composite key uses multiple columns together to uniquely identify a row.
+
+**Example**
+```sql
+PRIMARY KEY(student_id, course_id)
+```
+
+## 6. What is a weak entity?
+
+A weak entity cannot exist without another entity.
+
+**Example**
+- Order Item depends on Order
+- Without Order, Order Item has no meaning
+
+## 7. Why do we use constraints?
+
+Constraints enforce rules on database data.
+
+**Common Constraints**
+- PRIMARY KEY
+- FOREIGN KEY
+- UNIQUE
+- NOT NULL
+
+They improve data integrity and consistency.
+
+## 8. Explain many-to-many relationship.
+
+A `many-to-many` relationship occurs when:
+
+- One record relates to many records
+- And vice versa
+
+**Example**
+- Students ↔ Courses
+
+A junction table is usually used:
+```sql
+student_course(student_id, course_id)
+```
+
+## 9. What is the difference between Clustered and Non-Clustered Index?
+
+| Clustered Index          | Non-Clustered Index          |
+| ------------------------ | ---------------------------- |
+| Sorts actual table data  | Separate structure from data |
+| Only one per table       | Multiple allowed             |
+| Faster for range queries | Faster for lookups           |
+
+## 10. Explain Database Sharding and Partitioning. When would you use each?
+### Partitioning
+
+Splits a large table into smaller parts inside the same database server.
+
+Used for:
+
+- Large tables
+- Better query performance
+
+### Sharding
+
+Splits data across multiple database servers.
+
+Used for:
+
+- Very large-scale applications
+- Horizontal scaling
+
+**Example**
+
+- Users A–M → Server 1
+- Users N–Z → Server 2
+
 # Express TypeScript REST API
 
 A modular REST API boilerplate built with **Express.js** and **TypeScript**, featuring a clean folder structure, input validation, and cookie-based authentication scaffolding.
 
 
-Preview Link: 
+**Preview Link**: 
 
 
 ---
