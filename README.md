@@ -1,6 +1,207 @@
 # Database Interview Questions & Answers
 
 ---
+## 1. Difference between `DELETE`, `TRUNCATE`, `DROP` ?
+
+| Command    | What it does             | Can use WHERE? | Structure removed? | Rollback possible?*                    |
+| ---------- | ------------------------ | -------------- | ------------------ | -------------------------------------- |
+| `DELETE`   | Removes selected rows    | Yes            | No                 | Yes                                    |
+| `TRUNCATE` | Removes all rows quickly | No             | No                 | Yes in PostgreSQL                      |
+| `DROP`     | Deletes entire table     | No             | Yes                | Yes in PostgreSQL (inside transaction) |
+
+
+## 2. What is a PRIMARY KEY?
+
+A `PRIMARY KEY` is a column (or columns) that uniquely identifies each row in a table.
+
+Rules:
+
+- Cannot contain NULL
+- Must be unique
+- Only one primary key per table
+
+**Example**
+```sql
+CREATE TABLE students (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+);
+```
+
+## 3. Difference between PRIMARY KEY and UNIQUE KEY
+| PRIMARY KEY              | UNIQUE KEY              |
+| ------------------------ | ----------------------- |
+| Uniquely identifies rows | Also ensures uniqueness |
+| Cannot contain NULL      | Can contain NULL        |
+| Only one per table       | Multiple allowed        |
+
+
+## 4. What is a FOREIGN KEY?
+A `FOREIGN KEY` creates a relationship between two tables.
+
+It ensures that values exist in the referenced table.
+
+**Example**
+```sql
+CREATE TABLE departments (
+    id SERIAL PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    dept_id INT,
+    FOREIGN KEY (dept_id)
+    REFERENCES departments(id)
+);
+```
+
+## 5. What is JOIN in SQL?
+`JOIN` is used to combine data from multiple tables.
+
+### INNER JOIN
+Returns matching rows from both tables.
+```sql
+SELECT employees.name, departments.name
+FROM employees
+INNER JOIN departments
+ON employees.dept_id = departments.id;
+```
+
+### LEFT JOIN
+Returns all rows from left table and matched rows from right table.
+```sql
+SELECT employees.name, departments.name
+FROM employees
+LEFT JOIN departments
+ON employees.dept_id = departments.id;
+```
+
+## 6. What is normalization?
+
+Normalization organizes data to reduce duplication and improve consistency.
+
+### 1NF (First Normal Form)
+- No repeating groups
+- Each column has single value
+
+Bad:
+```
+Phones: 123,456
+```
+Good:
+```
+Phone: 123
+Phone: 456
+```
+
+### 2NF (Second Normal Form)
+- Must be in 1NF
+- No partial dependency
+
+Every non-key column must depend on the whole primary key.
+
+### 3NF (Third Normal Form)
+- Must be in 2NF
+- No transitive dependency
+
+Non-key columns should depend only on primary key.
+
+
+## 7. What is indexing?
+
+An `INDEX` improves query speed.
+
+Without index:
+- PostgreSQL scans whole table
+
+With index:
+- PostgreSQL finds data faster
+
+Why use index?
+- Faster SELECT
+- Faster searching/filtering
+- Faster joins
+
+**Example**
+```sql
+CREATE INDEX idx_employee_name
+ON employees(name);
+```
+
+## 8. Difference between WHERE and HAVING
+| WHERE                                   | HAVING                        |
+| --------------------------------------- | ----------------------------- |
+| Filters rows before grouping            | Filters groups after grouping |
+| Cannot use aggregate functions directly | Used with aggregate functions |
+
+**Example using `WHERE`**:
+```sql
+SELECT * FROM employees
+WHERE salary > 50000;
+```
+
+**Example using `HAVING`**
+```sql
+SELECT dept_id, COUNT(*)
+FROM employees
+GROUP BY dept_id
+HAVING COUNT(*) > 5;
+```
+
+## 9. What is a transaction in SQL?
+A transaction is a group of SQL operations executed together.
+
+Used to maintain data consistency.
+
+### COMMIT
+Saves changes permanently.
+```sql
+COMMIT;
+```
+
+### ROLLBACK
+Undoes changes.
+```sql
+ROLLBACK;
+```
+
+**Example**
+```sql
+BEGIN;
+
+UPDATE accounts
+SET balance = balance - 100
+WHERE id = 1;
+
+UPDATE accounts
+SET balance = balance + 100
+WHERE id = 2;
+
+COMMIT;
+```
+
+## 10. Query to find the second highest salary
+```sql
+SELECT DISTINCT salary
+FROM employees
+ORDER BY salary DESC
+OFFSET 1
+LIMIT 1;
+```
+Alternative:
+```sql
+SELECT MAX(salary)
+FROM employees
+WHERE salary < (
+    SELECT MAX(salary)
+    FROM employees
+);
+```
+
+
+---
+---
 
 ## 1. What is the difference between Primary Key and Foreign Key?
 
