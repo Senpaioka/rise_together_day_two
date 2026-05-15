@@ -331,10 +331,14 @@ Used for:
 - Users N–Z → Server 2
 
 
-# Database ERD
+# Database ERD (Using Mermaid)
 
 ![ERD](./image/erd.png)
 
+<br>
+
+# Database ERD (`NEW` Manually Done)
+![ERD](./image/new_erd.png)
 
 # Express TypeScript REST API
 
