@@ -1,3 +1,161 @@
+# Prisma ORM Questions & Answers
+
+## 1. What is Prisma ORM and why is it used in backend development?
+**Prisma ORM** is a modern ORM (Object Relational Mapper) for databases.
+
+It helps backend developers:
+
+- Connect apps to databases easily
+- Write database queries using JavaScript/TypeScript instead of raw SQL
+- Improve type safety and developer productivity
+- Manage database schema and migrations
+
+Example:
+```js
+const users = await prisma.user.findMany()
+```
+Instead of writing:
+```sql
+SELECT * FROM users;
+```
+
+## 2. Difference between findUnique() and findFirst() in Prisma
+### `findUnique()`
+- Finds one record using a unique field
+- Works only with fields marked @id or @unique
+
+Example:
+```js
+const user = await prisma.user.findUnique({
+  where: { email: "test@gmail.com" }
+})
+```
+Use when:
+- Searching by id, email, etc.
+
+### `findFirst()`
+- Finds the first matching record
+- Can use any field
+
+Example:
+```js
+const user = await prisma.user.findFirst({
+  where: { role: "ADMIN" }
+})
+```
+Use when:
+- Multiple records may match
+- You only need the first one
+
+## 3. What is Prisma Migration and why is prisma migrate dev used?
+A Prisma Migration is a way to track and apply database changes.
+
+Example changes:
+- Create tables
+- Add columns
+- Update relationships
+
+Command:
+```
+npx prisma migrate dev
+```
+It:
+- Creates a migration file
+- Updates the database
+- Regenerates Prisma Client
+
+Used during development to keep the database synced with the Prisma schema.
+
+## 4. Difference between select and include in Prisma
+### `select`
+Used to choose specific fields.
+
+Example:
+```js
+const user = await prisma.user.findUnique({
+  where: { id: 1 },
+  select: {
+    name: true,
+    email: true
+  }
+})
+```
+Returns:
+```json
+{
+  "name": "John",
+  "email": "john@gmail.com"
+}
+```
+
+### `include`
+
+Used to include related data (relations).
+
+Example:
+```js
+const user = await prisma.user.findUnique({
+  where: { id: 1 },
+  include: {
+    posts: true
+  }
+})
+```
+Returns:
+```json
+{
+  "id": 1,
+  "name": "John",
+  "posts": [...]
+}
+```
+
+Simple Difference:
+- select → specific fields
+- include → related models/data
+
+
+## 5. Purpose of schema.prisma and its main sections
+The schema.prisma file is the main configuration file in Prisma.
+
+It defines:
+- Database connection
+- Database models
+- Prisma client settings
+
+### Main sections:
+
+### 1. Generator
+Generates Prisma Client.
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+```
+
+### 2. Datasource
+Database connection setup.
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+```
+
+### 3. Models
+Defines database tables and relationships.
+```prisma
+model User {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
+}
+```
+These models become tables in the database.
+
+<br>
+
 # Database Interview Questions & Answers
 
 ---
