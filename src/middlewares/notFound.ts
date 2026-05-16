@@ -1,15 +1,18 @@
 import {Request, Response, NextFunction} from "express";
 import status from "http-status";
+import AppError from "../utils/appError.js";
 
 const notFound = (
     req: Request,
     res: Response,
     next: NextFunction ) => {
 
-    res.status(status.NOT_FOUND).json({
-        success: false,
-        message: `Route not found: ${req.originalUrl}`
-    });
+    next(
+        new AppError(
+            status.NOT_FOUND,
+            `Route not found: ${req.originalUrl}`
+        )
+    );
 };
 
 export default notFound;

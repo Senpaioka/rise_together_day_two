@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction, ErrorRequestHandler} from "express";
 import status from "http-status";
 import { ZodError } from "zod";
+import AppError from "../utils/appError.js";
 
 const globalError: ErrorRequestHandler = (
     err: unknown,
@@ -25,12 +26,17 @@ const globalError: ErrorRequestHandler = (
         }));
     }
 
+    // Custom App Error
+    else if (err instanceof AppError) {
+        statusCode = err.statusCode;
+        message = err.message;
+    }
 
     // Generic Error
     else if (err instanceof Error) {
         message = err.message;
     }
-    
+
 
     // Response
     res.status(statusCode).json({
