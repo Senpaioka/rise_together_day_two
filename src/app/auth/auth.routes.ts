@@ -1,21 +1,36 @@
-import express, { Router } from 'express';
-import authController from './auth.controller.js';
+import express, { Router } from "express";
+import authController from "./auth.controller.js";
+import validateSchema from "../../middlewares/validateSchema.js";
+import {registerSchema, loginSchema, changePasswordSchema, forgotPasswordSchema} from "./auth.validation.js";
 
 const route: Router = express.Router();
 
-// User registration route
-route.post('/register', authController.register);
+// User registration
+route.post(
+    "/register",
+    validateSchema(registerSchema),
+    authController.register
+);
 
-// User login route
-route.post('/login', authController.login);
+// User login
+route.post(
+    "/login",
+    validateSchema(loginSchema),
+    authController.login
+);
 
-// change password
-route.patch('/change-password', authController.changePassword);
+// Change password
+route.patch(
+    "/change-password",
+    validateSchema(changePasswordSchema),
+    authController.changePassword
+);
 
-// forgot password
-route.post('/forgot-password', authController.forgotPassword);
+// Forgot password
+route.post(
+    "/forgot-password",
+    validateSchema(forgotPasswordSchema),
+    authController.forgotPassword
+);
 
-
-
-// exporting
 export const authRoutes = route;
