@@ -1,7 +1,8 @@
-import express, { type Application, type NextFunction, type Request, type Response } from "express";
+import express, { type Application, type Request, type Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import router from './app/routes/routers.js';
+import globalError from "./middlewares/globalErrors.js";
 
 const app: Application = express();
 
@@ -31,14 +32,7 @@ app.use( (req: Request, res: Response) => {
 });
 
 // global error handler
-app.use( (err: unknown, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
-
-    res.status(500).json({
-        success: false,
-        message: "Something went wrong!"
-    });
-});
+app.use(globalError);
 
 
 export default app;
