@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import router from './app/routes/routers.js';
 import globalError from "./middlewares/globalErrors.js";
+import notFound from "./middlewares/notFound.js";
 
 const app: Application = express();
 
@@ -24,12 +25,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use('/api/v1', router);
 
 // Not found route
-app.use( (req: Request, res: Response) => {
-    res.status(404).json({
-        success: false,
-        message: "Route not found!"
-    });
-});
+app.use(notFound);
 
 // global error handler
 app.use(globalError);
