@@ -627,7 +627,13 @@ Base URL: `/api/v1`
 }
 ```
 
+![register](./image/register.png)
+![email_send](./image/verification_email.png)
+![email_verified](./image/email_verified.png)
+
 ---
+
+<br>
 
 ### POST `/api/v1/auth/login`
 
@@ -649,6 +655,8 @@ Base URL: `/api/v1`
   }
 }
 ```
+![prisma_studio](./image/prisma_studio.png)
+![login_successful](./image/login.png)
 
 ---
 
