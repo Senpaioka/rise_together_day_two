@@ -89,6 +89,110 @@ const registerUser = async (
 };
 
 
+const verifyEmail = async (
+    token: string ) => {
+    
+    // Check token exists
+    if (!token) {
+        throw new AppError(
+            status.BAD_REQUEST,
+            "Verification token is required"
+        );
+    }
+
+    // Verify JWT token
+    let decoded;
+
+    try {
+
+        decoded = jwt.verify(
+            token,
+            env.JWT_SECRET
+        ) as {
+            email: string;
+        };
+
+    } catch {
+
+        throw new AppError(
+            status.UNAUTHORIZED,
+            "Invalid or expired token"
+        );
+    }
+
+    // Find user
+    const user = await prisma.user.findUnique({
+        where: {
+            email: decoded.email
+        }
+    });
+
+    if (!user) {
+        throw new AppError(
+            status.NOT_FOUND,
+            "User not found"
+        );
+    }
+
+    // Check already verified
+    if (user.isVerified) {
+        throw new AppError(
+            status.BAD_REQUEST,
+            "Email already verified"
+        );
+    }
+
+    // Check token matches
+    if (
+        user.verificationToken !== token
+    ) {
+        throw new AppError(
+            status.UNAUTHORIZED,
+            "Invalid verification token"
+        );
+    }
+
+    //Check token expiry
+    if (
+        user.verificationExp &&
+        user.verificationExp < new Date()
+    ) {
+        throw new AppError(
+            status.UNAUTHORIZED,
+            "Verification token expired"
+        );
+    }
+
+
+    // Update user
+    const updatedUser =
+        await prisma.user.update({
+            where: {
+                email: decoded.email
+            },
+
+            data: {
+                isVerified: true,
+
+                verificationToken: null,
+
+                verificationExp: null
+            },
+
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                isVerified: true
+            }
+        });
+
+    return updatedUser;
+};
+
+
+
+
 // login user
 const loginUser = async (
     payload: LoginPayload ) => {
@@ -138,5 +242,6 @@ const loginUser = async (
 
 export const authService = {
     registerUser,
-    loginUser
+    loginUser,
+    verifyEmail
 };

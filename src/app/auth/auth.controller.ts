@@ -52,6 +52,26 @@ const login = catchAsync(async (
     });
 });
 
+// verify email
+const verifyEmail = catchAsync(async (
+    req: Request,
+    res: Response
+) => {
+
+    const token = req.query.token as string;
+
+    const result = await authService.verifyEmail(
+        token
+    );
+
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "Email verified successfully",
+        data: result
+    });
+});
+
 
 // change password
 // const changePassword = async (req: Request, res: Response) => {
@@ -133,4 +153,5 @@ const login = catchAsync(async (
 export default {
     register,
     login,
+    verifyEmail
 }

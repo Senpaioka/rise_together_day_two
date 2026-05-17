@@ -19,6 +19,12 @@ route.post(
     authController.login
 );
 
+// verify email
+route.get(
+    "/verify-email",
+    authController.verifyEmail
+);
+
 // Change password
 // route.patch(
 //     "/change-password",
