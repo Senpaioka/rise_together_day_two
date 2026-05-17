@@ -19,7 +19,13 @@ const envSchema = z.object({
 
     DATABASE_URL: z
         .string()
-        .min(1, "DATABASE_URL is required")
+        .min(1, "DATABASE_URL is required"),
+
+    EMAIL_USER: z
+    .email(),
+
+    EMAIL_PASS: z
+    .string().min(6)
 });
 
 
@@ -41,7 +47,9 @@ const env = {
     PORT: Number(parsedEnv.data.PORT),
     NODE_ENV: parsedEnv.data.NODE_ENV,
     JWT_SECRET: parsedEnv.data.JWT_SECRET,
-    DATABASE_URL: parsedEnv.data.DATABASE_URL
+    DATABASE_URL: parsedEnv.data.DATABASE_URL,
+    EMAIL_USER: parsedEnv.data.EMAIL_USER,
+    EMAIL_PASS: parsedEnv.data.EMAIL_PASS
 };
 
 export default env;
