@@ -3,6 +3,7 @@ import status from "http-status";
 import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
 import { authService } from "./auth.service.js";
+import env from '../../config/env.js';
 
 
 // registration
@@ -27,28 +28,36 @@ const register = catchAsync(async (
 // login
 const login = catchAsync(async (
     req: Request,
-    res: Response
-) => {
+    res: Response ) => {
 
-    const result = await authService.loginUser(
-        req.body
+    const result =
+        await authService.loginUser(
+            req.body
+        );
+
+    // Set cookie
+    res.cookie(
+        "accessToken",
+        result.accessToken,
+        {
+            httpOnly: true,
+
+            secure:
+                env.NODE_ENV === "PROD",
+
+            sameSite: "strict",
+
+            maxAge:
+                7 * 24 * 60 * 60 * 1000
+        }
     );
-
-    // Set token in cookie
-    res.cookie("token", result.token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000
-    });
 
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
-        message: "User logged in successfully",
-        data: {
-            accessToken: result.token
-        }
+        message:
+            "User logged in successfully",
+        data: result
     });
 });
 
