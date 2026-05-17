@@ -197,46 +197,70 @@ const verifyEmail = async (
 const loginUser = async (
     payload: LoginPayload ) => {
 
-    const { email, password } = payload;
+    const {email, password} = payload;
 
-    /**
-     * Find user
-     */
-
-    const user = {
-        id: 1,
-        email,
-        password: "hashed-password"
-    };
+    // find user
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
 
     if (!user) {
         throw new AppError(
-            404,
+            status.NOT_FOUND,
             "User not found"
         );
     }
 
-    /**
-     * Compare password
-     */
+    // Check email verification
+    if (!user.isVerified) {
+        throw new AppError(
+            status.UNAUTHORIZED,
+            "Please verify your email first"
+        );
+    }
 
-    const isPasswordMatched = true;
+
+    // Compare password
+    const isPasswordMatched =
+        await bcrypt.compare(
+            password,
+            user.password
+        );
 
     if (!isPasswordMatched) {
         throw new AppError(
-            401,
+            status.UNAUTHORIZED,
             "Invalid credentials"
         );
     }
 
-    /**
-     * Generate JWT token
-     */
 
-    const token = "jwt-token";
+    // Generate access token
+    const accessToken = jwt.sign(
+        {
+            userId: user.id,
+            email: user.email,
+            role: user.role
+        },
+
+        env.JWT_SECRET,
+
+        {
+            expiresIn: "7d"
+        }
+    );
 
     return {
-        token
+        accessToken,
+
+        user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+        }
     };
 };
 
