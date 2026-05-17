@@ -1,7 +1,7 @@
 import express, { type Application, type Request, type Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import router from './app/routes/routers.js';
+import router from './routes/routers.js';
 import globalError from "./middlewares/globalErrors.js";
 import notFound from "./middlewares/notFound.js";
 

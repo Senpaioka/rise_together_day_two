@@ -20,17 +20,17 @@ route.post(
 );
 
 // Change password
-route.patch(
-    "/change-password",
-    validateSchema(changePasswordSchema),
-    authController.changePassword
-);
+// route.patch(
+//     "/change-password",
+//     validateSchema(changePasswordSchema),
+//     authController.changePassword
+// );
 
 // Forgot password
-route.post(
-    "/forgot-password",
-    validateSchema(forgotPasswordSchema),
-    authController.forgotPassword
-);
+// route.post(
+//     "/forgot-password",
+//     validateSchema(forgotPasswordSchema),
+//     authController.forgotPassword
+// );
 
 export const authRoutes = route;
