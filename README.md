@@ -1,6 +1,9 @@
 # Mongoose Projcet Link:
 - Link: https://github.com/Senpaioka/-backend--express-mongoose-multi-vendor-api
 
+# Prisma & Neondb Project Link:
+- Link: https://github.com/Senpaioka/backend-expressjs-with-prisma-and-neon-DB
+
 # Prisma ORM Questions & Answers
 
 ## 1. What is Prisma ORM and why is it used in backend development?
